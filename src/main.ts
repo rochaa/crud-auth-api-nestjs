@@ -9,7 +9,7 @@ async function bootstrap() {
   const options = new DocumentBuilder()
     .setTitle('Gidu API')
     .setDescription('API - Gestão de Igrejas Digitais Unificada')
-    .setVersion('1.0.0')
+    .setVersion('1.0.1')
     .addTag('gidu')
     .build();
   const document = SwaggerModule.createDocument(app, options);
