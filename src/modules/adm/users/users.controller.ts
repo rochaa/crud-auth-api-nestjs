@@ -1,12 +1,14 @@
-import { Controller, UseGuards, Post, Req, Body, HttpException, HttpStatus } from "@nestjs/common";
-import { JwtAuthGuard } from "src/shared/auth/auth.guard";
-import { AuthService } from "src/shared/auth/auth.service";
-import { Guid } from "guid-typescript";
-import { UsersService } from "./users.service";
-import { ResultDto } from "src/shared/result/result.dto";
-import { User } from "./user.model";
+import { Controller, Post, Req, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { ApiUseTags } from '@nestjs/swagger';
+import { Guid } from 'guid-typescript';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserStatus } from './users.enum';
+import { UsersService } from './users.service';
+import { AuthService } from '../../../shared/auth/auth.service';
+import { ResultDto } from '../../../shared/result/result.dto';
 
 @Controller('v1/users')
+@ApiUseTags('Users')
 export class UsersController {
     constructor(
         private usersService: UsersService,
@@ -14,10 +16,9 @@ export class UsersController {
     ) { }
 
     @Post()
-    @UseGuards(JwtAuthGuard)
-    async post(@Body() userModel: User) {
-        const user = await this.usersService.create(userModel);
-        return new ResultDto(null, true, user, null);
+    async post(@Body() userDto: CreateUserDto) {
+        const user = await this.usersService.create(userDto);
+        return new ResultDto(null, true, { id: user.id }, null);
     }
 
     @Post('authenticate')

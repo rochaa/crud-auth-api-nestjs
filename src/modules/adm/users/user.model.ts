@@ -1,4 +1,5 @@
 import { Schema, Document } from 'mongoose';
+import { UserRole, UserStatus } from './users.enum';
 
 export interface User extends Document {
     email: string,
@@ -17,7 +18,8 @@ export const UserSchema = new Schema({
     }],
     status: {
         type: String, required: true,
-        enum: [UserStatus.Ativo, UserStatus.Inativo], default: UserStatus.Ativo
+        enum: [UserStatus.Ativo, UserStatus.Inativo],
+        default: UserStatus.Ativo
     },
 }, {
     timestamps: {

@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AdmModule } from 'src/modules/adm/adm.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AdmModule } from './modules/adm/adm.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.CONNECTION_STRING),
+    MongooseModule.forRoot(process.env.GIDU_CONNECTION_STRING, {
+      useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true
+    }),
     AdmModule
   ],
   controllers: [],
