@@ -1,9 +1,6 @@
-import {
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ResultExceptionDto } from '../result/result-exception.dto';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard() {
@@ -13,7 +10,7 @@ export class JwtAuthGuard extends AuthGuard() {
 
   handleRequest(err: any, user: any) {
     if (err || !user) {
-      throw err || new UnauthorizedException();
+      throw err || new UnauthorizedException(new ResultExceptionDto('Não autorizado', null));
     }
     return user;
   }

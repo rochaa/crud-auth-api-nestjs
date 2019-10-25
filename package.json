@@ -28,6 +28,8 @@
     "@nestjs/platform-express": "^6.7.2",
     "@nestjs/swagger": "^3.1.0",
     "cache-manager": "^2.9.0",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.10.2",
     "compression": "^1.7.4",
     "guid-typescript": "^1.0.9",
     "md5-typescript": "^1.0.5",

@@ -5,7 +5,7 @@ import { AdmModule } from './modules/adm/adm.module';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.GIDU_CONNECTION_STRING, {
-      useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true
+      useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
     }),
     AdmModule
   ],

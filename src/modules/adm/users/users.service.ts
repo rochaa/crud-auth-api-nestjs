@@ -1,42 +1,61 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Md5 } from "md5-typescript";
 import { UserStatus } from './users.enum';
 import { User } from './user.model';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { Password } from '../../../utils/password';
 
 @Injectable()
 export class UsersService {
+
     constructor(
-        @InjectModel('User') private readonly userModel: Model<User>
-    ) { }
+        @InjectModel('User') private readonly userModel: Model<User>) { }
+
+    async create(userDto: CreateUserDto) {
+        const passwordEncrypted = Password.encriptyPassword(userDto.password);
+        const userNew = new this.userModel({
+            email: userDto.email,
+            password: passwordEncrypted,
+            roles: userDto.roles,
+            status: UserStatus.Ativo
+        });
+        return await userNew.save();
+    }
+
+    async update(email: string, userDto: UpdateUserDto) {
+        const userModified = {
+            email: userDto.email,
+            roles: userDto.roles
+        }
+        return await this.userModel.findOneAndUpdate({ email }, userModified);
+    }
+
+    async updatePassword(email: string, password: string) {
+        return await this.userModel.findOneAndUpdate({ email }, { password });
+    }
+
+    async delete(id: string) {
+        const userDeleted = {
+            status: UserStatus.Inativo
+        }
+        return await this.userModel.findByIdAndUpdate(id, userDeleted);
+    }
+
+    async findById(id: string): Promise<User> {
+        return await this.userModel.findById(id, 'email roles status -_id').exec();
+    }
 
     async findByEmail(email: string) {
         return await this.userModel.findOne({ email: email }).exec();
     }
 
-    async create(userDto: CreateUserDto) {
-        const password = Md5.init(`${userDto.password}${process.env.GIDU_JWT_KEY}`);
-        const _user = new this.userModel(userDto);
-
-        _user.password = password;
-
-        return await _user.save();
-    }
-
-    async update(email: string, user: any) {
-        return await this.userModel.findOneAndUpdate({ email }, user);
-    }
-
-    async authenticate(email: string, password: string) {
-        var user = await this.userModel.findOne({ email: email }).exec();
-        const pass = Md5.init(`${password}${process.env.GIDU_JWT_KEY}`);
-
-        if (pass.toString() == user.password.toString()) {
-            return user;
-        } else {
-            return null;
-        }
+    async findAll(): Promise<User[]> {
+        return await this.userModel
+            .find({}, 'email roles status')
+            .sort('-updated_at')
+            .limit(30)
+            .exec();
     }
 }
