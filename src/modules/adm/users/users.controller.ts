@@ -1,6 +1,6 @@
 import {
     Controller, Post, Body, HttpStatus, Put, Param, HttpCode,
-    NotFoundException, Delete, Get, UseGuards, InternalServerErrorException
+    NotFoundException, Delete, Get, UseGuards
 } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -9,6 +9,8 @@ import { ResultDto } from '../../../shared/result/result.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../../../shared/auth/auth.guard';
 import { ResultExceptionDto } from '../../../shared/result/result-exception.dto';
+import { Roles } from '../../../shared/decorators/roles.decorators';
+import { UserRole } from './users.enum';
 
 @Controller('v1/users')
 @ApiUseTags('Users')
@@ -19,6 +21,7 @@ export class UsersController {
     ) { }
 
     @Post()
+    @Roles(UserRole.Administrador)
     async post(@Body() userDto: CreateUserDto) {
         const user = await this.usersService.create(userDto);
         return new ResultDto(null, true, { _id: user._id }, null);

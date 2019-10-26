@@ -2,7 +2,7 @@ import { IsEmail, MinLength, IsEnum } from 'class-validator';
 import { UserRole } from '../users.enum';
 
 export class CreateUserDto {
-    @IsEmail({}, { message: 'Email inválido' })
+    @IsEmail({}, { message: 'E-mail inválido' })
     readonly email: string;
 
     @MinLength(6, { message: 'Senha com menos de 6 caracteres' })
