@@ -17,6 +17,7 @@ async function bootstrap() {
     .setVersion('1.0.1')
     .addTag('Users', 'Cadastro de usuários')
     .addTag('Accounts', 'Controle de acesso')
+    .addTag('Churches', 'Cadastro de igrejas e congregações')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('', app, document);

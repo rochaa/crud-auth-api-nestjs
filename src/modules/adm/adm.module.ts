@@ -7,11 +7,14 @@ import { JwtStrategy } from '../../shared/auth/jwt.strategy';
 import { AuthService } from '../../shared/auth/auth.service';
 import { UsersService } from './users/users.service';
 import { AccountsService } from './accounts/accounts.service';
+import { ChurchesService } from './churches/churches.service';
 
 import { UsersController } from './users/users.controller';
 import { AccountsController } from './accounts/accounts.controller';
+import { ChurchesController } from './churches/churches.controller';
 
 import { UserSchema } from './users/user.model';
+import { ChurchSchema } from './churches/church.model';
 
 @Module({
     imports: [
@@ -24,9 +27,10 @@ import { UserSchema } from './users/user.model';
             },
         }),
         MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+        MongooseModule.forFeature([{ name: 'Church', schema: ChurchSchema }]),
         HttpModule
     ],
-    controllers: [UsersController, AccountsController],
-    providers: [UsersService, AccountsService, AuthService, JwtStrategy],
+    controllers: [UsersController, AccountsController, ChurchesController],
+    providers: [UsersService, AccountsService, ChurchesService, AuthService, JwtStrategy],
 })
 export class AdmModule { }
