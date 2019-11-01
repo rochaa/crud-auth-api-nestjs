@@ -15,7 +15,7 @@ export class ChurchesService {
     async create(churchDto: CreateChurchDto) {
         const churchNew = new this.churchModel({
             name: churchDto.name,
-            cnpj: churchDto.cnpj,
+            cnpj: churchDto.cnpj.replace(/[^\d]+/g, ''),
             churchRoot: churchDto.churchRoot,
             isCongregation: !isNullOrUndefined(churchDto.churchRoot)
         });
@@ -30,7 +30,7 @@ export class ChurchesService {
     async update(id: string, churchDto: UpdateChurchDto) {
         const churchModified = {
             name: churchDto.name,
-            cnpj: churchDto.cnpj
+            cnpj: churchDto.cnpj.replace(/[^\d]+/g, '')
         }
         return await this.churchModel.findByIdAndUpdate(id, churchModified);
     }
@@ -42,7 +42,7 @@ export class ChurchesService {
     }
 
     async findByName(name: string) {
-        return await this.churchModel.find({ name: name }).exec();
+        return await this.churchModel.find({ name: new RegExp(name, "i") }).exec();
     }
 
     async findByChurch(churchId: string) {

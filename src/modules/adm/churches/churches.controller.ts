@@ -1,6 +1,6 @@
 import {
     Controller, Post, Body, HttpStatus, Put, Param, HttpCode,
-    NotFoundException, Get, UseGuards
+    NotFoundException, Get, UseGuards, Query
 } from '@nestjs/common';
 import { ApiUseTags } from '@nestjs/swagger';
 import { CreateChurchDto } from './dto/create-church.dto';
@@ -36,17 +36,17 @@ export class ChurchesController {
             throw new NotFoundException(new ResultExceptionDto('Registro não encontrado', null));
     }
 
-    @Get(':id')
-    // Permissão se é Membro da igreja
-    async getById(@Param('id') id: string) {
-        const church = await this.churchesService.findById(id);
-        return new ResultDto(null, true, church, null);
-    }
-
     @Get()
     @Roles(UserRole.Administrador)
     async getAll() {
         const churches = await this.churchesService.findAll();
+        return new ResultDto(null, true, churches, null);
+    }
+
+    @Get('getbyfilters')
+    @Roles(UserRole.Administrador)
+    async getByFilters(@Query() query: any) {
+        const churches = await this.churchesService.findByName(query.name);
         return new ResultDto(null, true, churches, null);
     }
 }

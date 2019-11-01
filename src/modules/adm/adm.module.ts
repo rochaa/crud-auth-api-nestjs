@@ -27,8 +27,7 @@ import { ChurchSchema } from './churches/church.model';
             },
         }),
         MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
-        MongooseModule.forFeature([{ name: 'Church', schema: ChurchSchema }]),
-        HttpModule
+        MongooseModule.forFeature([{ name: 'Church', schema: ChurchSchema }])
     ],
     controllers: [UsersController, AccountsController, ChurchesController],
     providers: [UsersService, AccountsService, ChurchesService, AuthService, JwtStrategy],
