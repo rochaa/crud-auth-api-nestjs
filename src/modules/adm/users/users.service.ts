@@ -56,7 +56,7 @@ export class UsersService {
 
     async findAll(): Promise<User[]> {
         return await this.userModel
-            .find({}, 'email roles status')
+            .find({}, 'email roles created_at status')
             .sort('-updated_at')
             .limit(30)
             .exec();
