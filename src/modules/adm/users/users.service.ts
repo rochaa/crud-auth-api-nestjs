@@ -36,7 +36,8 @@ export class UsersService {
     }
 
     async updatePassword(email: string, password: string) {
-        return await this.userModel.findOneAndUpdate({ email }, { password });
+        const passwordEncrypted = Password.encriptyPassword(password);
+        return await this.userModel.findOneAndUpdate({ email }, { password: passwordEncrypted });
     }
 
     async delete(id: string) {

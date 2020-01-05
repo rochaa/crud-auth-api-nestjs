@@ -30,8 +30,7 @@ export class AccountsService {
 
     async changePassword(email: string, passwordDto: ChangePasswordDto) {
         await this.validateAccount(email, passwordDto.password);
-        const passwordEncrypted = Password.encriptyPassword(passwordDto.newPassword);
-        return await this.usersService.updatePassword(email, passwordEncrypted);
+        return await this.usersService.updatePassword(email, passwordDto.newPassword);
     }
 
     private async validateAccount(email: string, password: string) {
